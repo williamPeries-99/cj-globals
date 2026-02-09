@@ -21,7 +21,7 @@ export const FAQAccordion: React.FC<{ faqs: FAQ[] }> = ({ faqs }) => {
                 type="button"
                 className="w-full flex items-center justify-between gap-4 px-5 sm:px-6 py-5 text-left"
                 onClick={() => setOpen(isOpen ? null : idx)}
-                aria-expanded={String(isOpen)}
+                aria-expanded={isOpen}
                 aria-controls={`faq-panel-${idx}`}
                 id={`faq-header-${idx}`}
               >
