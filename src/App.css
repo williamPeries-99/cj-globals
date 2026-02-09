@@ -1,0 +1,99 @@
+
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+/* Keep this file tiny—Tailwind does most styling */
+/* Keep this file tiny — Tailwind does most styling */
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: #f8fafc; /* slate-50 */
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Nice selection */
+::selection {
+  background: rgba(212, 175, 55, 0.25);
+}
+
+/* Subtle scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(15, 23, 42, 0.16);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(15, 23, 42, 0.28);
+}
+
+/* Premium form controls used in Apply page */
+.input {
+  width: 100%;
+  border-radius: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.45); /* slate-400 */
+  background: rgba(255, 255, 255, 0.75);
+  padding: 14px 14px;
+  font-size: 0.95rem;
+  line-height: 1.2rem;
+  color: #0f172a; /* slate-900 */
+  outline: none;
+  transition: box-shadow 180ms ease, border-color 180ms ease, transform 180ms ease;
+}
+
+.input::placeholder {
+  color: rgba(100, 116, 139, 0.9);
+}
+
+.input:focus {
+  border-color: rgba(212, 175, 55, 0.65); /* accent */
+  box-shadow: 0 0 0 6px rgba(212, 175, 55, 0.16);
+}
+
+.input:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
