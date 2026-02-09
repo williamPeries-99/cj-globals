@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Globe, Sparkles, ShieldCheck, CheckCircle2 } from "lucide-react";
 import { motion } from "framer-motion";
+import { easeInOut } from "framer-motion";
 
 import { DESTINATIONS, SERVICES, TESTIMONIALS } from "../constants";
 import { Button } from "../components/Button";
@@ -35,7 +36,7 @@ const container = {
 
 const item = {
   hidden: { opacity: 0, y: 18, filter: "blur(8px)" },
-  show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.55, ease: "easeInOut" } },
+  show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.55, ease: easeInOut } },
 };
 
 const Home: React.FC = () => {
@@ -192,17 +193,22 @@ const Home: React.FC = () => {
               >
                 <Link
                   to={`/destinations?id=${dest.id}`}
-                  className="relative group overflow-hidden rounded-[2rem] aspect-[4/5] border border-slate-200/70 bg-white/60 backdrop-blur shadow-[0_18px_60px_rgba(2,6,23,0.08)]"
+                  className="relative group overflow-hidden rounded-[2rem] border border-accent/40 bg-white/80 backdrop-blur shadow-lg hover:shadow-2xl transition-shadow duration-300 flex items-stretch min-h-[340px]"
+                  style={{ minHeight: '340px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}
                 >
-                  <img
-                    src={dest.image}
-                    alt={dest.name}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-75" />
-                  <div className="absolute bottom-0 left-0 p-6 text-white">
-                    <h3 className="text-2xl font-semibold mb-2 group-hover:text-accent transition-colors">{dest.name}</h3>
-                    <div className="flex items-center text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="absolute inset-0 w-full h-full">
+                    <img
+                      src={dest.image}
+                      alt={dest.name}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      style={{ minHeight: '100%', minWidth: '100%' }}
+                    />
+                    {/* Overlay for better visibility */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent opacity-70" />
+                  </div>
+                  <div className="relative z-10 p-6 text-white drop-shadow-lg">
+                    <h3 className="text-2xl font-semibold mb-2 group-hover:text-accent transition-colors" style={{textShadow:'0 2px 8px rgba(0,0,0,0.45)'}}>{dest.name}</h3>
+                    <div className="flex items-center text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity text-accent drop-shadow">
                       Explore Study Options <ArrowRight size={16} className="ml-2" />
                     </div>
                   </div>
