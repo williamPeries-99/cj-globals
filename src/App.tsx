@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
+import WhatsAppFloat from "./components/WhatsAppFloat";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
@@ -49,7 +50,12 @@ const App: React.FC = () => {
         <Footer />
         <ScrollToTopButton />
       </div>
+      
+      {/* WhatsApp button (GLOBAL) */}
+      <WhatsAppFloat phone="94773534167" message="Hello CJ Global! I’d like to know more." />
+    
     </Router>
+    
   );
 };
 
