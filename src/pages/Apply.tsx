@@ -1,16 +1,55 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Send, CheckCircle2, AlertCircle, ShieldCheck, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
+import { useSearchParams } from "react-router-dom";
+import { COURSES } from "../courses";
 import type { ContactFormData } from "../types";
 
 const Apply: React.FC = () => {
+  const [searchParams] = useSearchParams();
+  const courseParam = searchParams.get("course");
+
+  const PROGRAMME_LEVELS = [
+    "Certificate",
+    "Diploma",
+    "Higher Diploma",
+    "Advanced Diploma",
+    "Postgraduate Diploma",
+    "International Courses",
+  ];
+
+  const initialCourse = useMemo(() => {
+    if (!courseParam) return undefined;
+
+    const byId = COURSES.find((c) => c.id === courseParam);
+    if (byId) return byId;
+
+    const normalized = courseParam.trim().toLowerCase();
+    return COURSES.find((c) => c.title.trim().toLowerCase() === normalized);
+  }, [courseParam]);
+
+  const programmeOptions = useMemo(
+    () =>
+      PROGRAMME_LEVELS.filter((level) =>
+        COURSES.some((course) => course.title.startsWith(level)),
+      ),
+    [],
+  );
+
+  const initialProgramme =
+    (initialCourse?.title &&
+      PROGRAMME_LEVELS.find((level) => initialCourse.title.startsWith(level))) ||
+    "";
+
   const [formData, setFormData] = useState<ContactFormData>({
-    fullName: "",
+    programmes: initialProgramme,
+    qualification: "",
+    courseName: initialCourse?.title ?? "",
+    name: "",
+    dob: "",
+    contactNumber: "",
     email: "",
-    phone: "",
-    country: "Australia",
-    education: "Bachelors",
-    message: "",
+    howFoundUs: "",
   });
 
   const [status, setStatus] =
@@ -31,12 +70,14 @@ const Apply: React.FC = () => {
 
     try {
       const body = new URLSearchParams({
-        fullName: formData.fullName,
-        phone: formData.phone,
+        programmes: formData.programmes,
+        qualification: formData.qualification,
+        courseName: formData.courseName,
+        name: formData.name,
+        dob: formData.dob,
+        contactNumber: formData.contactNumber,
         email: formData.email,
-        country: formData.country,
-        education: formData.education,
-        message: formData.message,
+        howFoundUs: formData.howFoundUs,
       });
 
       await fetch(import.meta.env.VITE_GOOGLE_SCRIPT_URL, {
@@ -137,73 +178,130 @@ const Apply: React.FC = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input
-                  required
-                  name="fullName"
-                  value={formData.fullName}
-                  onChange={handleChange}
-                  placeholder="Full Name"
-                  className="input"
-                />
-                <input
-                  required
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  placeholder="Phone Number"
-                  className="input"
-                />
+                <div className="flex flex-col gap-1">
+                  <label className="text-xs font-semibold text-slate-600">
+                    Programmes <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    required
+                    name="programmes"
+                    value={formData.programmes}
+                    onChange={handleChange}
+                    className="input"
+                  >
+                    <option value="">Please select</option>
+                    {programmeOptions.map((level) => (
+                      <option key={level} value={level}>
+                        {level}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="flex flex-col gap-1">
+                  <label className="text-xs font-semibold text-slate-600">
+                    Qualification <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    required
+                    name="qualification"
+                    value={formData.qualification}
+                    onChange={handleChange}
+                    className="input"
+                  >
+                    <option value="">Please select</option>
+                    <option value="O/L">O/L</option>
+                    <option value="A/L">A/L</option>
+                    <option value="Diploma">Diploma</option>
+                    <option value="Higher Diploma">Higher Diploma</option>
+                    <option value="Degree">Degree</option>
+                    <option value="Postgraduate">Postgraduate</option>
+                  </select>
+                </div>
               </div>
 
-              <input
-                required
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="Email Address"
-                className="input"
-              />
+              <div className="flex flex-col gap-1">
+                <label className="text-xs font-semibold text-slate-600">
+                  Course Name <span className="text-red-500">*</span>
+                </label>
+                <select
+                  required
+                  name="courseName"
+                  value={formData.courseName}
+                  onChange={handleChange}
+                  className="input"
+                >
+                  <option value="">Please select</option>
+                  {COURSES.filter((course) =>
+                    formData.programmes
+                      ? course.title.startsWith(formData.programmes)
+                      : true,
+                  ).map((course) => (
+                    <option key={course.id} value={course.title}>
+                      {course.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <select
-                  id="country"
-                  name="country"
-                  value={formData.country}
+                <input
+                  required
+                  name="name"
+                  value={formData.name}
                   onChange={handleChange}
+                  placeholder="Name"
                   className="input"
-                  aria-label="Destination Country"
-                >
-                  <option>Australia</option>
-                  <option>Canada</option>
-                  <option>UK</option>
-                  <option>USA</option>
-                  <option>New Zealand</option>
-                  <option>Ireland</option>
-                </select>
-
-                <select
-                  id="education"
-                  name="education"
-                  value={formData.education}
+                />
+                <input
+                  required
+                  name="dob"
+                  value={formData.dob}
                   onChange={handleChange}
+                  placeholder="Date of Birth (dd/mm/yyyy)"
                   className="input"
-                  aria-label="Education Level"
-                >
-                  <option value="Foundations">Foundations / Diploma</option>
-                  <option value="Bachelors">Bachelors</option>
-                  <option value="Masters">Masters</option>
-                  <option value="PhD">PhD</option>
-                </select>
+                />
               </div>
 
-              <textarea
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                placeholder="Tell us your preferred intake, course, and any questions (optional)"
-                className="input min-h-[120px] resize-none"
-              />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input
+                  required
+                  name="contactNumber"
+                  value={formData.contactNumber}
+                  onChange={handleChange}
+                  placeholder="Contact Number"
+                  className="input"
+                />
+                <input
+                  required
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="E-mail"
+                  className="input"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <label className="text-xs font-semibold text-slate-600">
+                  How did you find us? <span className="text-red-500">*</span>
+                </label>
+                <select
+                  required
+                  name="howFoundUs"
+                  value={formData.howFoundUs}
+                  onChange={handleChange}
+                  className="input"
+                >
+                  <option value="">Please select</option>
+                  <option value="Google">Google</option>
+                  <option value="Facebook/Instagram">Facebook / Instagram</option>
+                  <option value="Friend/Family">Friend / Family</option>
+                  <option value="Agent">Agent</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
 
               {status === "error" && (
                 <div className="bg-red-50 text-red-600 p-4 rounded-2xl flex items-center text-sm border border-red-100">
@@ -215,7 +313,7 @@ const Apply: React.FC = () => {
               <button
                 type="submit"
                 disabled={status === "submitting"}
-                className="w-full rounded-2xl bg-accent text-primary py-3.5 font-semibold flex items-center justify-center hover:bg-primary hover:text-white transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                className="w-full rounded-full bg-accent text-primary py-3.5 font-semibold flex items-center justify-center shadow-glow transition-all disabled:opacity-60 disabled:cursor-not-allowed hover:-translate-y-0.5 hover:bg-primary hover:text-white hover:shadow-[0_16px_40px_rgba(11,31,58,0.35)]"
               >
                 {status === "submitting" ? (
                   <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />

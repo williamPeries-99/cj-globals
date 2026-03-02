@@ -26,12 +26,14 @@ export interface Testimonial {
 }
 
 export interface ContactFormData {
-	fullName: string;
+	programmes: string;
+	qualification: string;
+	courseName: string;
+	name: string;
+	dob: string;
+	contactNumber: string;
 	email: string;
-	phone: string;
-	country: string;
-	education: string;
-	message: string;
+	howFoundUs: string;
 	[key: string]: string;
 }
 // ...existing code from types.ts in root Cj folder...

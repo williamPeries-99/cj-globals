@@ -9,6 +9,7 @@ const nav = [
   { name: "About Us", path: "/about" },
   { name: "Services", path: "/services" },
   { name: "Destinations", path: "/destinations" },
+  { name: "Courses", path: "/courses" },
   { name: "Resources", path: "/resources" },
   { name: "Apply Now", path: "/apply", isCTA: true },
 ];

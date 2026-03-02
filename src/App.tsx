@@ -13,6 +13,10 @@ import Resources from "./pages/Resources";
 import { AnimatedPage } from "./components/AnimatedPage";
 import ScrollToTopButton from "./components/ScrollToTopButton";
 
+import CourseList from "./pages/CourseList";
+import CourseDetails from "./pages/CourseDetails";
+import DestinationDetails from "./pages/DestinationDetails";
+
 const AppRoutes = () => {
   const location = useLocation();
   return (
@@ -22,8 +26,11 @@ const AppRoutes = () => {
         <Route path="/about" element={<AnimatedPage><About /></AnimatedPage>} />
         <Route path="/services" element={<AnimatedPage><Services /></AnimatedPage>} />
         <Route path="/destinations" element={<AnimatedPage><Destinations /></AnimatedPage>} />
+        <Route path="/destinations/:id" element={<AnimatedPage><DestinationDetails /></AnimatedPage>} />
         <Route path="/apply" element={<AnimatedPage><Apply /></AnimatedPage>} />
         <Route path="/resources" element={<AnimatedPage><Resources /></AnimatedPage>} />
+        <Route path="/courses" element={<AnimatedPage><CourseList /></AnimatedPage>} />
+        <Route path="/courses/:id" element={<AnimatedPage><CourseDetails /></AnimatedPage>} />
       </Routes>
     </AnimatePresence>
   );
